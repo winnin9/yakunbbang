@@ -24,7 +24,9 @@ export function ShareCard({ year, month, grade, goodCount, burntCount }: Props) 
     const a = document.createElement('a')
     a.href = url
     a.download = `야근빵-${year}-${month}.png`
+    document.body.appendChild(a)
     a.click()
+    a.remove()
     // ⚠️ 앱인토스 배포 시 Toss 공유 API로 교체: toss.share({ imageUrl: url })
   }
 
