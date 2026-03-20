@@ -14,7 +14,7 @@ export type BakerGrade =
   | 'skilled'      // 70~89%: 🧑‍🍳 실력파 제빵사
   | 'diligent'     // 50~69%: 🍞 성실한 제빵사
   | 'smoky'        // 30~49%: 🟠 탄내나는 제빵사
-  | 'charcoal-pro' // 29% 이하: ☠️ 숯 전문가
+  | 'charcoal-pro' // 30% 미만: ☠️ 숯 전문가
 
 export interface OvertimeSession {
   id: string
