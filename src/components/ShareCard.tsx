@@ -5,6 +5,7 @@ import { useRef } from 'react'
 import html2canvas from 'html2canvas'
 import { BAKER_GRADE_LABEL } from '../utils/bakerGrade'
 import type { BakerGrade } from '../types'
+import { Button } from '@toss/tds-mobile'
 
 interface Props {
   year: number
@@ -60,12 +61,9 @@ export function ShareCard({ year, month, grade, goodCount, burntCount }: Props) 
           </div>
         </div>
       </div>
-      <button
-        onClick={handleShare}
-        style={{ marginTop: 16, width: '100%', padding: 14, background: '#ff6b35', color: '#fff', border: 'none', borderRadius: 12, fontSize: 16 }}
-      >
+      <Button variant="fill" size="large" onClick={handleShare} style={{ marginTop: 16, width: '100%' }}>
         📤 공유 카드 저장
-      </button>
+      </Button>
     </div>
   )
 }
