@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { HomePage } from './pages/HomePage'
 import { ResultPage } from './pages/ResultPage'
+import { OvenPage } from './pages/OvenPage'
 import type { OvertimeSession } from './types'
 
 type Page = 'home' | 'result' | 'oven' | 'report'
@@ -25,7 +26,10 @@ export default function App() {
           onHome={() => setPage('home')}
         />
       )}
-      {(page === 'oven' || page === 'report') && <div>준비 중</div>}
+      {page === 'oven' && (
+        <OvenPage onHome={() => setPage('home')} onReport={() => setPage('report')} />
+      )}
+      {page === 'report' && <div>월간 리포트 준비 중</div>}
     </div>
   )
 }
