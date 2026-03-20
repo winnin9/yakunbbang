@@ -1,11 +1,10 @@
 // src/components/ShareCard.tsx
 // html2canvas로 카드 이미지 생성 후 다운로드
 
-import { useRef } from 'react'
+import { useRef, forwardRef, useImperativeHandle } from 'react'
 import html2canvas from 'html2canvas'
 import { BAKER_GRADE_LABEL } from '../utils/bakerGrade'
 import type { BakerGrade } from '../types'
-import { Button } from '@toss/tds-mobile'
 
 interface Props {
   year: number
@@ -15,31 +14,42 @@ interface Props {
   burntCount: number
 }
 
-export function ShareCard({ year, month, grade, goodCount, burntCount }: Props) {
-  const cardRef = useRef<HTMLDivElement>(null)
+export interface ShareCardHandle {
+  save: () => void
+}
 
-  async function handleShare() {
-    if (!cardRef.current) return
-    const canvas = await html2canvas(cardRef.current, { scale: 2 })
-    const url = canvas.toDataURL('image/png')
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `야근빵-${year}-${month}.png`
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
-    // ⚠️ 앱인토스 배포 시 Toss 공유 API로 교체: toss.share({ imageUrl: url })
-  }
+export const ShareCard = forwardRef<ShareCardHandle, Props>(
+  function ShareCard({ year, month, grade, goodCount, burntCount }, ref) {
+    const cardRef = useRef<HTMLDivElement>(null)
 
-  const gradeInfo = grade ? BAKER_GRADE_LABEL[grade] : null
+    async function handleSave() {
+      if (!cardRef.current) return
+      const canvas = await html2canvas(cardRef.current, { scale: 2 })
+      const url = canvas.toDataURL('image/png')
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `야근빵-${year}-${month}.png`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      // ⚠️ 앱인토스 배포 시 Toss 공유 API로 교체: toss.share({ imageUrl: url })
+    }
 
-  return (
-    <div>
+    useImperativeHandle(ref, () => ({ save: handleSave }))
+
+    const gradeInfo = grade ? BAKER_GRADE_LABEL[grade] : null
+
+    return (
       <div
         ref={cardRef}
         style={{
-          width: 320, padding: 32, background: 'linear-gradient(135deg, #ff6b35, #ffd700)',
-          borderRadius: 24, textAlign: 'center', color: '#fff'
+          width: '100%',
+          padding: 32,
+          background: 'linear-gradient(135deg, #ff6b35, #ffd700)',
+          borderRadius: 24,
+          textAlign: 'center',
+          color: '#fff',
+          boxSizing: 'border-box',
         }}
       >
         <p style={{ fontSize: 13, opacity: 0.8 }}>🍞 야근빵</p>
@@ -61,9 +71,6 @@ export function ShareCard({ year, month, grade, goodCount, burntCount }: Props) 
           </div>
         </div>
       </div>
-      <Button variant="fill" size="large" onClick={handleShare} style={{ marginTop: 16, width: '100%' }}>
-        📤 공유 카드 저장
-      </Button>
-    </div>
-  )
-}
+    )
+  }
+)
