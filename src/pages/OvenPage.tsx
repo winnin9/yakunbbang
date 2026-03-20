@@ -1,5 +1,6 @@
 // src/pages/OvenPage.tsx
 
+import { Button, TextButton } from '@toss/tds-mobile'
 import { useSessions } from '../hooks/useStorage'
 import { OvenList } from '../components/OvenList'
 
@@ -16,16 +17,16 @@ export function OvenPage({ onHome, onReport }: Props) {
     <div style={{ padding: 24 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>🗂️ 오븐</h1>
-        <button onClick={onReport} style={{ background: 'none', border: 'none', fontSize: 14, color: '#ff6b35' }}>
+        <TextButton size="small" onClick={onReport}>
           월간 리포트 →
-        </button>
+        </TextButton>
       </div>
       <div style={{ marginTop: 16 }}>
         <OvenList sessions={sessions} />
       </div>
-      <button onClick={onHome} style={{ marginTop: 24, width: '100%', padding: 14, background: '#eee', border: 'none', borderRadius: 12, fontSize: 16 }}>
+      <Button variant="weak" size="large" onClick={onHome} style={{ marginTop: 24, width: '100%' }}>
         🏠 홈으로
-      </button>
+      </Button>
     </div>
   )
 }
