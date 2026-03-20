@@ -89,11 +89,11 @@ import { TDSMobileAITProvider } from '@toss/tds-mobile-ait'
 |----------------|------------|---------|------|
 | `빵 굽기 시작 🔥` | Button | `fill` | HomePage |
 | `빵 완성 🍞` | Button | `fill` | HomePage (활성 중 화면) |
-| `🗂️ 오븐 보기` | Button | `outline` | ResultPage |
+| `🗂️ 오븐 보기` | Button | `border` | ResultPage |
 | `🏠 홈으로` | Button | `fill` | ResultPage |
 | `월간 리포트 →` | TextButton | — | OvenPage (텍스트 스타일) |
-| `🏠 홈으로` | Button | `outline` | OvenPage |
-| `← 뒤로` | Button | `outline` | ReportPage |
+| `🏠 홈으로` | Button | `border` | OvenPage |
+| `← 뒤로` | Button | `border` | ReportPage |
 | `📤 공유 카드 저장` | Button | `fill` | ShareCard |
 
 > ShareCard의 "공유 카드 저장" 버튼은 html2canvas 캡처 대상 밖에 있으므로 TDS Button 교체 가능.
