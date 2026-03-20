@@ -3,6 +3,7 @@
 import { useSessions } from '../hooks/useStorage'
 import { calcBakerGrade } from '../utils/bakerGrade'
 import { BakerGradeDisplay } from '../components/BakerGrade'
+import { ShareCard } from '../components/ShareCard'
 
 interface Props {
   onBack: () => void
@@ -38,6 +39,9 @@ export function ReportPage({ onBack }: Props) {
       </div>
       <div style={{ marginTop: 16 }}>
         <BakerGradeDisplay grade={grade} />
+      </div>
+      <div style={{ marginTop: 16 }}>
+        <ShareCard year={year} month={month} grade={grade} goodCount={goodCount} burntCount={burntCount} />
       </div>
       <button onClick={onBack} style={{ marginTop: 24, width: '100%', padding: 14, background: '#eee', border: 'none', borderRadius: 12, fontSize: 16 }}>
         ← 뒤로
