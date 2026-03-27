@@ -14,10 +14,10 @@ export function useOvertimeSession() {
   const [active, setActive] = useState<ActiveSession | null>(null)
   const { saveSession } = useSessions()
 
-  function startSession(goalHour: number, goalMinute: number): void {
+  function startSession(goalHour: number, goalMinute: number, dateOffset: number = 0): void {
     const now = Date.now()
-    const today = new Date(now)
-    const goal = new Date(today)
+    const goal = new Date(now)
+    goal.setDate(goal.getDate() + dateOffset)
     goal.setHours(goalHour, goalMinute, 0, 0)
     setActive({ startTime: now, goalEndTime: goal.getTime() })
   }
@@ -40,5 +40,9 @@ export function useOvertimeSession() {
     return session
   }
 
-  return { active, startSession, endSession }
+  function cancelSession(): void {
+    setActive(null)
+  }
+
+  return { active, startSession, endSession, cancelSession }
 }

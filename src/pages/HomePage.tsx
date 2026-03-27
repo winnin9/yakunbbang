@@ -1,41 +1,48 @@
 // src/pages/HomePage.tsx
 
 import { useState, useEffect } from 'react'
-
-import { colors } from '@toss/tds-colors'
 import { useOvertimeSession } from '../hooks/useOvertimeSession'
 import type { OvertimeSession } from '../types'
 
 interface Props {
   onResult: (session: OvertimeSession) => void
+  onOven: () => void
 }
 
-const pillSelectStyle: React.CSSProperties = {
-  appearance: 'none',
-  border: `1.5px solid ${colors.grey200}`,
-  borderRadius: 100,
-  padding: '10px 20px',
-  fontSize: 28,
-  fontWeight: 'bold',
+const pillStyle = (active: boolean): React.CSSProperties => ({
+  border: `1.5px solid ${active ? 'var(--brown)' : '#D8D8D8'}`,
+  borderRadius: 14,
+  padding: '14px 0',
+  fontFamily: 'inherit',
+  fontSize: 20,
+  fontWeight: 600,
   textAlign: 'center',
-  background: colors.white,
-  color: colors.grey800,
-  width: 90,
+  background: active ? 'var(--brown-light)' : '#fff',
+  color: active ? 'var(--brown)' : 'var(--text-primary)',
   cursor: 'pointer',
-}
+  flex: 1,
+  outline: 'none',
+  appearance: 'none' as const,
+  transition: 'border-color 0.15s, background 0.15s, color 0.15s',
+})
 
-export function HomePage({ onResult }: Props) {
+export function HomePage({ onResult, onOven }: Props) {
+  const [dateOffset, setDateOffset] = useState(0)
   const [hour, setHour] = useState(22)
   const [minute, setMinute] = useState(0)
+  const [activeField, setActiveField] = useState<'date' | 'hour' | 'minute'>('minute')
   const [elapsed, setElapsed] = useState(0)
-  const { active, startSession, endSession } = useOvertimeSession()
+  const [overMinutes, setOverMinutes] = useState(0)
+  const { active, startSession, endSession, cancelSession } = useOvertimeSession()
 
   useEffect(() => {
     if (!active) return
-    const interval = setInterval(() => {
+    const update = () => {
       setElapsed(Math.floor((Date.now() - active.startTime) / 60000))
-    }, 10000)
-    setElapsed(Math.floor((Date.now() - active.startTime) / 60000))
+      setOverMinutes(Math.floor((Date.now() - active.goalEndTime) / 60000))
+    }
+    update()
+    const interval = setInterval(update, 10000)
     return () => clearInterval(interval)
   }, [active])
 
@@ -46,94 +53,133 @@ export function HomePage({ onResult }: Props) {
 
   if (active) {
     const goal = new Date(active.goalEndTime)
+    const goalHH = String(goal.getHours()).padStart(2, '0')
+    const goalMM = String(goal.getMinutes()).padStart(2, '0')
+    const isOver = overMinutes > 0
+
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: colors.white }}>
-        <div style={{ flex: 1, padding: '32px 24px 16px' }}>
-          <h1 style={{ fontSize: 22, fontWeight: 'bold', color: colors.grey800, marginBottom: 24 }}>
-            {elapsed}분째 빵 굽는 중...🔥
-          </h1>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg)' }}>
+        <div style={{
+          flex: 1, display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          padding: '40px 24px 20px',
+        }}>
+          {/* 베이킹 중 — oven glow */}
+          <div className="bread-card baking" style={{ marginBottom: 24 }}>
+            <img src="/bread.png" alt="식빵이" style={{ width: '78%', height: '78%', objectFit: 'contain' }} />
+          </div>
+
+          <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 40, letterSpacing: '-0.1px' }}>
+            {elapsed}분째 열심히 굽는중...
+          </p>
+
           <div style={{
             width: '100%',
-            aspectRatio: '1',
-            background: colors.grey50,
-            borderRadius: 24,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 96,
+            background: isOver ? '#FFF1F1' : '#F0FDF4',
+            borderRadius: 20,
+            padding: '22px 24px',
+            textAlign: 'center',
           }}>
-            🍞
-          </div>
-          <div style={{ marginTop: 24, textAlign: 'center' }}>
-            <p style={{ fontSize: 14, color: colors.grey500, marginBottom: 8 }}>목표 종료 시간</p>
-            <p style={{ fontSize: 28, fontWeight: 'bold', color: colors.grey800 }}>
-              {goal.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
-            </p>
+            {isOver ? (
+              <>
+                <p style={{ fontSize: 28, fontWeight: 900, color: '#EF4444', letterSpacing: '-0.6px', marginBottom: 8 }}>
+                  목표 시간 {overMinutes}분 초과 🔥
+                </p>
+                <p style={{ fontSize: 14, color: '#EF4444', fontWeight: 500, opacity: 0.7 }}>
+                  목표 종료 {goalHH}:{goalMM} · 지금 당장 종료하세요!
+                </p>
+              </>
+            ) : (
+              <>
+                <p style={{ fontSize: 24, fontWeight: 800, color: '#16A34A', letterSpacing: '-0.5px', marginBottom: 8 }}>
+                  아직 목표 시간 전이에요 ✅
+                </p>
+                <p style={{ fontSize: 14, color: '#16A34A', fontWeight: 500, opacity: 0.75 }}>
+                  목표 종료 {goalHH}:{goalMM}
+                </p>
+              </>
+            )}
           </div>
         </div>
-        <div style={{ padding: '16px 24px 32px' }}>
-          <button
-            onClick={handleEnd}
-            style={{ width: '100%', background: colors.orange500, color: '#fff', border: 'none', borderRadius: 16, height: 56, fontSize: 17, fontWeight: 'bold', cursor: 'pointer' }}
-          >
-            빵 완성 🧀
-          </button>
+
+        <div style={{ padding: '16px 24px 48px', display: 'flex', gap: 12 }}>
+          <button className="btn btn-cancel" style={{ flex: 1 }} onClick={cancelSession}>취소</button>
+          <button className="btn btn-brown" style={{ flex: 1 }} onClick={handleEnd}>빵 완성 🍞</button>
         </div>
       </div>
     )
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: colors.white }}>
-      <div style={{ flex: 1, padding: '32px 24px 16px' }}>
-        <h1 style={{ fontSize: 22, fontWeight: 'bold', color: colors.grey800, marginBottom: 24 }}>
-          오늘의 야근빵 굽기 🍞
-        </h1>
-        <div style={{
-          width: '100%',
-          aspectRatio: '1',
-          background: colors.grey50,
-          borderRadius: 24,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 96,
-        }}>
-          🍞
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg)' }}>
+      <div style={{ flex: 1, padding: '56px 24px 20px' }}>
+
+        {/* 오른쪽 상단 오븐 아이콘 */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 20 }}>
+          <button
+            onClick={onOven}
+            style={{
+              width: 44, height: 44, borderRadius: 12,
+              background: '#EFEFEF', border: 'none', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'background 0.15s',
+            }}
+          >
+            <img src="/activity.png" width="22" height="22" alt="activity" style={{ display: 'block' }} />
+          </button>
         </div>
-        <div style={{ marginTop: 32 }}>
-          <p style={{ fontSize: 15, fontWeight: '600', color: colors.grey700, marginBottom: 16 }}>
-            오늘 목표 종료 시간?
+
+        {/* 식빵이 */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 48 }}>
+          <div className="bread-card" style={{ marginBottom: 16 }}>
+            <img src="/bread.png" alt="식빵이" style={{ width: '78%', height: '78%', objectFit: 'contain' }} />
+          </div>
+          <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.2px' }}>식빵이</p>
+        </div>
+
+        {/* 시간 설정 */}
+        <div>
+          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 12, letterSpacing: '-0.1px', textTransform: 'uppercase' }}>
+            목표 종료 시간
           </p>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={() => { setDateOffset(d => d === 0 ? 1 : 0); setActiveField('date') }}
+              style={{ ...pillStyle(activeField === 'date'), display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {dateOffset === 0 ? '오늘' : '내일'}
+            </button>
             <select
               value={hour}
-              onChange={(e) => setHour(Number(e.target.value))}
-              style={pillSelectStyle}
+              onChange={e => setHour(Number(e.target.value))}
+              onFocus={() => setActiveField('hour')}
+              style={pillStyle(activeField === 'hour')}
             >
               {Array.from({ length: 24 }, (_, i) => (
                 <option key={i} value={i}>{String(i).padStart(2, '0')}</option>
               ))}
             </select>
-            <span style={{ fontSize: 24, fontWeight: 'bold', color: colors.grey400 }}>:</span>
             <select
               value={minute}
-              onChange={(e) => setMinute(Number(e.target.value))}
-              style={pillSelectStyle}
+              onChange={e => setMinute(Number(e.target.value))}
+              onFocus={() => setActiveField('minute')}
+              style={pillStyle(activeField === 'minute')}
             >
-              {[0, 10, 20, 30, 40, 50].map((m) => (
+              {[0, 10, 20, 30, 40, 50].map(m => (
                 <option key={m} value={m}>{String(m).padStart(2, '0')}</option>
               ))}
             </select>
           </div>
         </div>
       </div>
-      <div style={{ padding: '16px 24px 32px' }}>
+
+      <div style={{ padding: '16px 24px 48px' }}>
         <button
-          onClick={() => startSession(hour, minute)}
-          style={{ width: '100%', background: colors.orange500, color: '#fff', border: 'none', borderRadius: 16, height: 56, fontSize: 17, fontWeight: 'bold', cursor: 'pointer' }}
+          className="btn btn-brown"
+          style={{ width: '100%' }}
+          onClick={() => startSession(hour, minute, dateOffset)}
         >
-          빵 굽기 시작 🔥
+          빵 굽기 시작 🍞
         </button>
       </div>
     </div>

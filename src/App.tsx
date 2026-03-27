@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: 480, margin: '0 auto', minHeight: '100vh' }}>
-      {page === 'home' && <HomePage onResult={handleResult} />}
+      {page === 'home' && <HomePage onResult={handleResult} onOven={() => setPage('oven')} />}
       {page === 'result' && lastSession && (
         <ResultPage
           session={lastSession}

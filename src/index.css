@@ -1,4 +1,112 @@
+:root {
+  --brown: #C68642;
+  --brown-dark: #7B4220;
+  --brown-light: #FDF0E3;
+  --brown-glow: rgba(198, 134, 66, 0.25);
+  --bg: #F9F6F2;
+  --card: #FFFFFF;
+  --text-primary: #1A1A1A;
+  --text-secondary: #9A9A9A;
+  --divider: #EBEBEB;
+  --cancel-bg: #E8E8E8;
+}
+
+/* TDSMobileAITProvider가 주입하는 배경 그라디언트 제거 */
+html, body, #root {
+  background: var(--bg) !important;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, sans-serif; background: #fff; }
-button:focus-visible { outline: 2px solid #ff6a00; outline-offset: 2px; }
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+/* 식빵이 floating */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* 오븐 glow — 베이킹 중 */
+@keyframes oven-glow {
+  0%, 100% { box-shadow: 0 6px 24px var(--brown-glow); }
+  50%       { box-shadow: 0 12px 48px rgba(198, 134, 66, 0.45); }
+}
+
+/* 버튼 공통 */
+.btn {
+  border: none;
+  border-radius: 16px;
+  height: 56px;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); filter: brightness(0.95); }
+
+.btn-brown {
+  background: var(--brown);
+  color: #fff;
+}
+.btn-brown:hover { filter: brightness(1.07); }
+
+.btn-cancel {
+  background: var(--cancel-bg);
+  color: var(--text-primary);
+}
+.btn-cancel:hover { filter: brightness(0.95); }
+
+/* 빵 카드 */
+.bread-card {
+  width: 200px;
+  height: 200px;
+  background: var(--card);
+  border-radius: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  animation: float 3.5s ease-in-out infinite;
+}
+
+.bread-card.baking {
+  animation: float 3.5s ease-in-out infinite, oven-glow 2s ease-in-out infinite;
+}
+
+/* 인풋 pill 공통 */
+.pill {
+  border: 1.5px solid #D8D8D8;
+  border-radius: 14px;
+  padding: 12px 0;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  background: var(--card);
+  color: var(--text-primary);
+  cursor: pointer;
+  flex: 1;
+  outline: none;
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.pill.active {
+  border-color: var(--brown);
+  background: var(--brown-light);
+  color: var(--brown);
+}
+
+/* 포커스 접근성 */
+button:focus-visible { outline: 2px solid var(--brown); outline-offset: 2px; }
 button:focus:not(:focus-visible) { outline: none; }

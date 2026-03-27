@@ -1,7 +1,5 @@
 // src/pages/OvenPage.tsx
 
-
-import { colors } from '@toss/tds-colors'
 import { useSessions } from '../hooks/useStorage'
 import { OvenList } from '../components/OvenList'
 
@@ -15,25 +13,32 @@ export function OvenPage({ onHome, onReport }: Props) {
   const sessions = getSessions()
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: colors.white }}>
-      <div style={{ flex: 1, padding: '32px 24px 16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg)' }}>
+      <div style={{ flex: 1, padding: '56px 24px 16px' }}>
+        {/* 헤더 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
           <button
             onClick={onHome}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 20, color: colors.grey800 }}
+            style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: '#EFEFEF', border: 'none', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}
           >
-            ←
+            <img src="/back.png" width="18" height="18" alt="back" style={{ display: 'block' }} />
           </button>
-          <h1 style={{ fontSize: 22, fontWeight: 'bold', color: colors.grey800 }}>내 오븐</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.4px' }}>내 오븐</h1>
+          <span style={{ marginLeft: 'auto', fontSize: 14, fontWeight: 600, color: 'var(--text-secondary)' }}>
+            {sessions.length}개
+          </span>
         </div>
+
         <OvenList sessions={sessions} />
       </div>
-      <div style={{ padding: '16px 24px 32px' }}>
-        <button
-          onClick={onReport}
-          style={{ width: '100%', background: colors.orange500, color: '#fff', border: 'none', borderRadius: 16, height: 56, fontSize: 17, fontWeight: 'bold', cursor: 'pointer' }}
-        >
-          이번 달 리포트 보기
+
+      <div style={{ padding: '16px 24px 48px' }}>
+        <button className="btn btn-brown" style={{ width: '100%' }} onClick={onReport}>
+          월별 리포트 보기
         </button>
       </div>
     </div>
