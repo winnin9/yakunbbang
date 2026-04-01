@@ -46,7 +46,8 @@ export function ResultPage({ session, onOven, onHome }: Props) {
   const actualMM = String(actual.getMinutes()).padStart(2, '0')
 
   const diffMs = actualEndTime - goalEndTime
-  const diffMin = Math.max(0, Math.round(diffMs / 60000))
+  const isEarly = diffMs < 0
+  const diffMin = Math.round(Math.abs(diffMs) / 60000)
 
   return (
     <div style={{
@@ -100,7 +101,11 @@ export function ResultPage({ session, onOven, onHome }: Props) {
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: isDark ? 'rgba(255,255,255,0.55)' : 'var(--text-secondary)' }}>초과율</span>
             <span style={{ fontSize: 22, fontWeight: 800, color: overratePercent <= 0 ? '#22C55E' : isDark ? '#FF6B6B' : 'var(--brown)', letterSpacing: '-0.5px' }}>
-              {overratePercent <= 0 ? '0%' : `+${overratePercent}%`}
+              {isEarly
+                ? `-${Math.abs(overratePercent)}%`
+                : overratePercent === 0
+                ? '0%'
+                : `+${overratePercent}%`}
             </span>
           </div>
           <div style={{ height: 1, background: isDark ? 'rgba(255,255,255,0.1)' : 'var(--divider)', marginBottom: 14 }} />
@@ -114,8 +119,12 @@ export function ResultPage({ session, onOven, onHome }: Props) {
           </div>
           {diffMin > 0 && (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: 14, fontWeight: 600, color: isDark ? 'rgba(255,255,255,0.55)' : 'var(--text-secondary)' }}>초과 시간</span>
-              <span style={{ fontSize: 15, fontWeight: 700, color: isDark ? '#FF6B6B' : 'var(--brown)' }}>+{diffMin}분</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: isDark ? 'rgba(255,255,255,0.55)' : 'var(--text-secondary)' }}>
+                {isEarly ? '일찍 완료' : '초과 시간'}
+              </span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: isEarly ? '#22C55E' : isDark ? '#FF6B6B' : 'var(--brown)' }}>
+                {isEarly ? `-${diffMin}분` : `+${diffMin}분`}
+              </span>
             </div>
           )}
         </div>
