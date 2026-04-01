@@ -1,6 +1,7 @@
 // src/components/OvenList.tsx
 
 import type { OvertimeSession } from '../types'
+import { BREAD_SKIN_IMAGE } from '../types'
 import { BREAD_LABEL } from '../utils/breadCalculator'
 
 interface Props {
@@ -45,16 +46,31 @@ export function OvenList({ sessions }: Props) {
             padding: '14px 0',
             borderBottom: '1px solid var(--divider)',
           }}>
-            {/* 빵 상태 이모지 */}
-            <div style={{
-              width: 48, height: 48, borderRadius: 14,
-              background: '#fff',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              marginRight: 14, flexShrink: 0,
-              fontSize: 26,
-              boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
-            }}>
-              {emoji}
+            {/* 빵 이미지 썸네일 + 상태 뱃지 */}
+            <div style={{ position: 'relative', width: 48, height: 48, marginRight: 14, flexShrink: 0 }}>
+              <div style={{
+                width: 48, height: 48, borderRadius: 14,
+                background: '#FDF3EE',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
+              }}>
+                <img
+                  src={BREAD_SKIN_IMAGE[s.breadSkin ?? 'shokupan'] ?? '/bread.png'}
+                  alt="빵"
+                  style={{ width: 34, height: 34, objectFit: 'contain' }}
+                />
+              </div>
+              {/* 상태 이모지 뱃지 */}
+              <div style={{
+                position: 'absolute', bottom: -4, right: -4,
+                width: 20, height: 20, borderRadius: 6,
+                background: '#fff',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.12)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 11,
+              }}>
+                {emoji}
+              </div>
             </div>
 
             {/* 날짜 + 라벨 */}

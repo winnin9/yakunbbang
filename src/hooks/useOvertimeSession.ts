@@ -8,6 +8,7 @@ import type { OvertimeSession } from '../types'
 interface ActiveSession {
   startTime: number
   goalEndTime: number
+  breadSkin?: string
 }
 
 function safeRandomUUID(): string {
@@ -47,6 +48,7 @@ export function useOvertimeSession() {
       actualEndTime,
       overratePercent,
       breadStatus: getBreadStatus(overratePercent),
+      breadSkin: active.breadSkin ?? 'shokupan',
     }
     const saved = saveSession(session)
     if (!saved) {

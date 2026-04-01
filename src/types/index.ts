@@ -24,4 +24,10 @@ export interface OvertimeSession {
   actualEndTime: number // Unix timestamp (ms)
   overratePercent: number
   breadStatus: BreadStatus
+  breadSkin?: string    // 사용한 빵 스킨 ID (미설정 시 'shokupan' 기본값)
+}
+
+// 스킨 ID → 이미지 경로 매핑. 새 스킨 추가 시 여기에 추가.
+export const BREAD_SKIN_IMAGE: Record<string, string> = {
+  shokupan: '/bread.png',
 }
