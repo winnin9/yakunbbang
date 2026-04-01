@@ -9,7 +9,7 @@ interface Props {
 
 function formatDate(dateStr: string): string {
   // 'YYYY-MM-DD' → 'MM/DD (요일)'
-  const d = new Date(dateStr)
+  const d = new Date(dateStr + 'T00:00:00')
   const days = ['일', '월', '화', '수', '목', '금', '토']
   const mm = String(d.getMonth() + 1).padStart(2, '0')
   const dd = String(d.getDate()).padStart(2, '0')
