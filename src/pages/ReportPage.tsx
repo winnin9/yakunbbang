@@ -5,8 +5,15 @@ import html2canvas from 'html2canvas'
 import { useSessions } from '../hooks/useStorage'
 import { calcBakerGrade, BAKER_GRADE_LABEL } from '../utils/bakerGrade'
 
-const BackIcon = () => (
-  <img src="/back.png" width="24" height="24" alt="back" style={{ display: 'block' }} />
+const ChevronLeft = ({ color = 'currentColor', size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 18l-6-6 6-6" />
+  </svg>
+)
+const ChevronRight = ({ color = 'currentColor', size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 18l6-6-6-6" />
+  </svg>
 )
 
 interface Props {
@@ -69,18 +76,19 @@ export function ReportPage({ onBack }: Props) {
             onClick={onBack}
             style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: 6 }}
           >
-            <BackIcon />
+            <ChevronLeft color="var(--text-primary)" />
           </button>
           {/* 월 내비게이션 */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <button onClick={prevMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 24, color: 'var(--text-secondary)', padding: '0 8px 0 0', lineHeight: 1 }}>‹</button>
+            <button onClick={prevMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px 4px 0', display: 'flex', alignItems: 'center' }}>
+              <ChevronLeft color="var(--text-secondary)" size={22} />
+            </button>
             <h1 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', flex: 1, textAlign: 'center', letterSpacing: '-0.4px' }}>
               {selectedYear}년 {selectedMonth}월
             </h1>
-            <button
-              onClick={nextMonth}
-              style={{ background: 'none', border: 'none', cursor: isCurrent ? 'default' : 'pointer', fontSize: 24, color: isCurrent ? '#D0D0D0' : 'var(--text-secondary)', padding: '0 0 0 8px', lineHeight: 1 }}
-            >›</button>
+            <button onClick={nextMonth} style={{ background: 'none', border: 'none', cursor: isCurrent ? 'default' : 'pointer', padding: '4px 0 4px 8px', display: 'flex', alignItems: 'center' }}>
+              <ChevronRight color={isCurrent ? '#D0D0D0' : 'var(--text-secondary)'} size={22} />
+            </button>
           </div>
         </div>
 

@@ -25,7 +25,9 @@ export function OvenPage({ onHome, onReport }: Props) {
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}
           >
-            <img src="/back.png" width="18" height="18" alt="back" style={{ display: 'block' }} />
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
           </button>
           <h1 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.4px' }}>내 오븐</h1>
           <span style={{ marginLeft: 'auto', fontSize: 14, fontWeight: 600, color: 'var(--text-secondary)' }}>

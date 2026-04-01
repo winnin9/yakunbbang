@@ -143,7 +143,12 @@ export function HomePage({ onResult, onOven }: Props) {
               transition: 'background 0.15s',
             }}
           >
-            <img src="/activity.png" width="22" height="22" alt="activity" style={{ display: 'block' }} />
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                <rect x="14" y="14" width="7" height="7" rx="1.5" />
+              </svg>
           </button>
         </div>
 
