@@ -9,12 +9,8 @@ export function calcOverrate(
 ): number {
   const planned = goalEndTime - startTime
   const overtime = actualEndTime - goalEndTime
-  // planned이 0 이하(목표가 시작보다 빠른 경우)면 전체 시간에 대한 초과율로 계산
-  if (planned <= 0) {
-    const total = actualEndTime - startTime
-    if (total <= 0) return 0
-    return Math.round(((actualEndTime - goalEndTime) / total) * 100 + 100)
-  }
+  // planned <= 0은 잘못된 입력(목표가 시작보다 이전). 입력 단계에서 방지하므로 0% 처리.
+  if (planned <= 0) return 0
   return Math.round((overtime / planned) * 100)
 }
 

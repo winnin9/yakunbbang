@@ -35,6 +35,16 @@ export function HomePage({ onResult, onOven }: Props) {
   const [overMinutes, setOverMinutes] = useState(0)
   const { active, startSession, endSession, cancelSession } = useOvertimeSession()
 
+  function handleStart() {
+    const now = new Date()
+    const tentative = new Date(now)
+    tentative.setDate(tentative.getDate() + dateOffset)
+    tentative.setHours(hour, minute, 0, 0)
+    // 목표 시간이 현재보다 이전이면 자동으로 +1일 보정
+    const finalOffset = tentative.getTime() <= now.getTime() ? dateOffset + 1 : dateOffset
+    startSession(hour, minute, finalOffset)
+  }
+
   useEffect(() => {
     if (!active) return
     const update = () => {
@@ -110,6 +120,14 @@ export function HomePage({ onResult, onOven }: Props) {
     )
   }
 
+  // 현재 설정 기준으로 목표가 과거이면 실질적으로 내일로 표시
+  const nowForLabel = new Date()
+  const tentativeGoal = new Date(nowForLabel)
+  tentativeGoal.setDate(tentativeGoal.getDate() + dateOffset)
+  tentativeGoal.setHours(hour, minute, 0, 0)
+  const effectiveDateOffset = tentativeGoal.getTime() <= nowForLabel.getTime() ? dateOffset + 1 : dateOffset
+  const dateLabel = effectiveDateOffset === 0 ? '오늘' : '내일'
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg)' }}>
       <div style={{ flex: 1, padding: '56px 24px 20px' }}>
@@ -147,7 +165,7 @@ export function HomePage({ onResult, onOven }: Props) {
               onClick={() => { setDateOffset(d => d === 0 ? 1 : 0); setActiveField('date') }}
               style={{ ...pillStyle(activeField === 'date'), display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              {dateOffset === 0 ? '오늘' : '내일'}
+              {dateLabel}
             </button>
             <select
               value={hour}
@@ -177,7 +195,7 @@ export function HomePage({ onResult, onOven }: Props) {
         <button
           className="btn btn-brown"
           style={{ width: '100%' }}
-          onClick={() => startSession(hour, minute, dateOffset)}
+          onClick={handleStart}
         >
           빵 굽기 시작 🍞
         </button>
