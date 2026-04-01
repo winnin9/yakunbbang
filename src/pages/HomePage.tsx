@@ -183,7 +183,7 @@ export function HomePage({ onResult, onOven }: Props) {
               onFocus={() => setActiveField('minute')}
               style={pillStyle(activeField === 'minute')}
             >
-              {[0, 10, 20, 30, 40, 50].map(m => (
+              {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map(m => (
                 <option key={m} value={m}>{String(m).padStart(2, '0')}</option>
               ))}
             </select>
