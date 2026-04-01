@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { HomePage } from './pages/HomePage'
 import { ResultPage } from './pages/ResultPage'
 import { OvenPage } from './pages/OvenPage'
@@ -16,6 +16,13 @@ export default function App() {
     setLastSession(session)
     setPage('result')
   }
+
+  // result 페이지인데 lastSession이 없으면 home으로 복귀
+  useEffect(() => {
+    if (page === 'result' && !lastSession) {
+      setPage('home')
+    }
+  }, [page, lastSession])
 
   return (
     <div style={{ maxWidth: 480, margin: '0 auto', minHeight: '100vh' }}>

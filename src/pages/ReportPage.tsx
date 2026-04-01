@@ -17,9 +17,8 @@ export function ReportPage({ onBack }: Props) {
   const cardRef = useRef<HTMLDivElement>(null)
   const { getSessionsByMonth } = useSessions()
 
-  const now = new Date()
-  const [selectedYear, setSelectedYear] = useState(now.getFullYear())
-  const [selectedMonth, setSelectedMonth] = useState(now.getMonth() + 1)
+  const [selectedYear, setSelectedYear] = useState(() => new Date().getFullYear())
+  const [selectedMonth, setSelectedMonth] = useState(() => new Date().getMonth() + 1)
 
   function prevMonth() {
     if (selectedMonth === 1) { setSelectedYear(y => y - 1); setSelectedMonth(12) }
@@ -27,8 +26,9 @@ export function ReportPage({ onBack }: Props) {
   }
 
   function nextMonth() {
-    const isCurrent = selectedYear === now.getFullYear() && selectedMonth === now.getMonth() + 1
-    if (isCurrent) return
+    const n = new Date()
+    const isCur = selectedYear === n.getFullYear() && selectedMonth === n.getMonth() + 1
+    if (isCur) return
     if (selectedMonth === 12) { setSelectedYear(y => y + 1); setSelectedMonth(1) }
     else setSelectedMonth(m => m + 1)
   }
@@ -50,7 +50,7 @@ export function ReportPage({ onBack }: Props) {
   const gradeInfo = grade ? BAKER_GRADE_LABEL[grade] : null
   const goodCount = sessions.filter(s => s.overratePercent <= 20).length
   const burntCount = sessions.length - goodCount
-  const isCurrent = selectedYear === now.getFullYear() && selectedMonth === now.getMonth() + 1
+  const isCurrent = (() => { const n = new Date(); return selectedYear === n.getFullYear() && selectedMonth === n.getMonth() + 1 })()
   const yy = String(selectedYear).slice(2)
 
   // 평균 초과율

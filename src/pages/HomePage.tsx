@@ -52,7 +52,7 @@ export function HomePage({ onResult, onOven }: Props) {
       setOverMinutes(Math.floor((Date.now() - active.goalEndTime) / 60000))
     }
     update()
-    const interval = setInterval(update, 10000)
+    const interval = setInterval(update, 60000)
     return () => clearInterval(interval)
   }, [active])
 
