@@ -1,0 +1,75 @@
+<h2>홈 화면 디자인 방향</h2>
+<p class="subtitle">3가지 토스 스타일 중 하나를 골라주세요</p>
+
+<div class="cards">
+
+  <!-- Option A: 미니멀 토스 -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:20px;border-bottom:1px solid #f0f0f0;">
+      <div style="background:#fff;border-radius:20px;padding:24px;font-family:-apple-system,sans-serif;max-width:240px;margin:0 auto;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+        <p style="font-size:11px;color:#8B95A1;margin-bottom:4px;font-weight:500;">오늘 목표 종료 시간</p>
+        <div style="background:#F9FAFB;border-radius:12px;padding:16px;margin:12px 0;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span style="font-size:32px;font-weight:700;color:#191F28;">22</span>
+          <span style="font-size:24px;color:#8B95A1;">:</span>
+          <span style="font-size:32px;font-weight:700;color:#191F28;">00</span>
+        </div>
+        <button style="width:100%;padding:16px;background:#FF6B35;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;">빵 굽기 시작 🔥</button>
+        <div style="display:flex;justify-content:space-between;margin-top:12px;">
+          <button style="flex:1;padding:10px;background:#F2F4F6;color:#191F28;border:none;border-radius:10px;font-size:13px;font-weight:600;margin-right:6px;">🗂️ 오븐</button>
+          <button style="flex:1;padding:10px;background:#F2F4F6;color:#191F28;border:none;border-radius:10px;font-size:13px;font-weight:600;">📊 리포트</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 미니멀 토스</h3>
+      <p>흰 배경 + 회색 카드 + 주황 버튼. 가장 토스다운 느낌.</p>
+    </div>
+  </div>
+
+  <!-- Option B: 헤더 강조 -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:20px;border-bottom:1px solid #f0f0f0;">
+      <div style="background:#fff;border-radius:20px;overflow:hidden;font-family:-apple-system,sans-serif;max-width:240px;margin:0 auto;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+        <div style="background:linear-gradient(135deg,#FF6B35,#FF9B6B);padding:24px;text-align:center;">
+          <p style="font-size:28px;margin:0;">🍞</p>
+          <p style="color:#fff;font-size:18px;font-weight:700;margin:4px 0 0;">야근빵</p>
+        </div>
+        <div style="padding:20px;">
+          <p style="font-size:12px;color:#8B95A1;margin-bottom:8px;">목표 종료 시간</p>
+          <div style="background:#F9FAFB;border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;">
+            <span style="font-size:28px;font-weight:700;color:#191F28;">22:00</span>
+          </div>
+          <button style="width:100%;padding:14px;background:#FF6B35;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;">빵 굽기 시작 🔥</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 헤더 강조</h3>
+      <p>상단 그라디언트 헤더 + 흰 카드 내용. 앱 정체성이 강함.</p>
+    </div>
+  </div>
+
+  <!-- Option C: 다크 모드 -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#111;padding:20px;border-bottom:1px solid #f0f0f0;">
+      <div style="background:#1A1D27;border-radius:20px;padding:24px;font-family:-apple-system,sans-serif;max-width:240px;margin:0 auto;">
+        <p style="font-size:11px;color:#8B95A1;margin-bottom:4px;font-weight:500;">오늘 목표 종료 시간</p>
+        <div style="background:#252836;border-radius:12px;padding:16px;margin:12px 0;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span style="font-size:32px;font-weight:700;color:#fff;">22</span>
+          <span style="font-size:24px;color:#8B95A1;">:</span>
+          <span style="font-size:32px;font-weight:700;color:#fff;">00</span>
+        </div>
+        <button style="width:100%;padding:16px;background:#FF6B35;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;">빵 굽기 시작 🔥</button>
+        <div style="display:flex;justify-content:space-between;margin-top:12px;">
+          <button style="flex:1;padding:10px;background:#252836;color:#8B95A1;border:none;border-radius:10px;font-size:13px;font-weight:600;margin-right:6px;">🗂️ 오븐</button>
+          <button style="flex:1;padding:10px;background:#252836;color:#8B95A1;border:none;border-radius:10px;font-size:13px;font-weight:600;">📊 리포트</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 다크 모드</h3>
+      <p>어두운 배경 + 주황 포인트. 야근 분위기에 어울리는 느낌.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,57 @@
+<h2>화면 이동 방식</h2>
+<p class="subtitle">토스처럼 하단 탭바를 쓸까요, 아니면 버튼으로 이동할까요?</p>
+
+<div class="split">
+
+  <!-- Option A: 하단 탭바 -->
+  <div class="mockup" data-choice="a" onclick="toggleSelect(this)" style="cursor:pointer;">
+    <div class="mockup-header">A. 하단 탭바 (토스 스타일)</div>
+    <div class="mockup-body" style="padding:0;overflow:hidden;">
+      <div style="font-family:-apple-system,sans-serif;background:#fff;border-radius:12px;overflow:hidden;">
+        <!-- 콘텐츠 영역 -->
+        <div style="padding:24px 20px 16px;">
+          <p style="font-size:11px;color:#8B95A1;margin-bottom:4px;font-weight:500;">오늘 목표 종료 시간</p>
+          <div style="background:#F2F4F6;border-radius:12px;padding:16px;margin:12px 0;text-align:center;">
+            <span style="font-size:28px;font-weight:700;color:#191F28;">22:00</span>
+          </div>
+          <button style="width:100%;padding:14px;background:#FF6B35;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;">빵 굽기 시작 🔥</button>
+        </div>
+        <!-- 하단 탭바 -->
+        <div style="border-top:1px solid #F2F4F6;display:flex;padding:8px 0 4px;">
+          <div style="flex:1;text-align:center;padding:6px 0;">
+            <div style="font-size:20px;">🏠</div>
+            <div style="font-size:10px;color:#FF6B35;font-weight:700;margin-top:2px;">홈</div>
+          </div>
+          <div style="flex:1;text-align:center;padding:6px 0;">
+            <div style="font-size:20px;">🗂️</div>
+            <div style="font-size:10px;color:#8B95A1;margin-top:2px;">오븐</div>
+          </div>
+          <div style="flex:1;text-align:center;padding:6px 0;">
+            <div style="font-size:20px;">📊</div>
+            <div style="font-size:10px;color:#8B95A1;margin-top:2px;">리포트</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B: 버튼 이동 -->
+  <div class="mockup" data-choice="b" onclick="toggleSelect(this)" style="cursor:pointer;">
+    <div class="mockup-header">B. 버튼 이동 (현재 방식)</div>
+    <div class="mockup-body" style="padding:0;overflow:hidden;">
+      <div style="font-family:-apple-system,sans-serif;background:#fff;border-radius:12px;overflow:hidden;padding:24px 20px;">
+        <p style="font-size:11px;color:#8B95A1;margin-bottom:4px;font-weight:500;">오늘 목표 종료 시간</p>
+        <div style="background:#F2F4F6;border-radius:12px;padding:16px;margin:12px 0;text-align:center;">
+          <span style="font-size:28px;font-weight:700;color:#191F28;">22:00</span>
+        </div>
+        <button style="width:100%;padding:14px;background:#FF6B35;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;">빵 굽기 시작 🔥</button>
+        <!-- 버튼으로 이동 -->
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button style="flex:1;padding:12px;background:#F2F4F6;color:#191F28;border:none;border-radius:12px;font-size:13px;font-weight:600;">🗂️ 오븐 보기</button>
+          <button style="flex:1;padding:12px;background:#F2F4F6;color:#191F28;border:none;border-radius:12px;font-size:13px;font-weight:600;">📊 리포트</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
