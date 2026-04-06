@@ -25,13 +25,13 @@ export function useOvertimeSession() {
   // 앱 시작 시 localStorage에서 진행 중 세션 복원
   const [active, setActive] = useState<ActiveSession | null>(() => getActiveSession())
 
-  function startSession(goalHour: number, goalMinute: number, dateOffset: number = 0): void {
+  function startSession(goalHour: number, goalMinute: number, dateOffset: number = 0, breadSkin: string = 'shokupan'): void {
     if (active) return // 중복 세션 방지
     const now = Date.now()
     const goal = new Date(now)
     goal.setDate(goal.getDate() + dateOffset)
     goal.setHours(goalHour, goalMinute, 0, 0)
-    const newActive: ActiveSession = { startTime: now, goalEndTime: goal.getTime() }
+    const newActive: ActiveSession = { startTime: now, goalEndTime: goal.getTime(), breadSkin }
     saveActiveSession(newActive)
     setActive(newActive)
   }

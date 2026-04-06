@@ -3,6 +3,17 @@
 import { useState, useEffect } from 'react'
 import { useOvertimeSession } from '../hooks/useOvertimeSession'
 import type { OvertimeSession } from '../types'
+import { BREAD_SKIN_IMAGE } from '../types'
+
+const BREAD_SKINS = [
+  { id: 'shokupan',   name: '식빵이' },
+  { id: 'korone',     name: '코로네' },
+  { id: 'cream',      name: '슈크림' },
+  { id: 'bun',        name: '버터번' },
+  { id: 'baguette',   name: '바게트' },
+  { id: 'bagel',      name: '베이글' },
+  { id: 'sogeumbang', name: '소금빵' },
+]
 
 interface Props {
   onResult: (session: OvertimeSession) => void
@@ -33,6 +44,7 @@ export function HomePage({ onResult, onOven }: Props) {
   const [activeField, setActiveField] = useState<'date' | 'hour' | 'minute'>('minute')
   const [elapsed, setElapsed] = useState(0)
   const [overMinutes, setOverMinutes] = useState(0)
+  const [selectedSkin, setSelectedSkin] = useState('shokupan')
   const { active, startSession, endSession, cancelSession } = useOvertimeSession()
 
   function handleStart() {
@@ -42,7 +54,7 @@ export function HomePage({ onResult, onOven }: Props) {
     tentative.setHours(hour, minute, 0, 0)
     // 목표 시간이 현재보다 이전이면 자동으로 +1일 보정
     const finalOffset = tentative.getTime() <= now.getTime() ? dateOffset + 1 : dateOffset
-    startSession(hour, minute, finalOffset)
+    startSession(hour, minute, finalOffset, selectedSkin)
   }
 
   useEffect(() => {
@@ -76,7 +88,11 @@ export function HomePage({ onResult, onOven }: Props) {
         }}>
           {/* 베이킹 중 — oven glow */}
           <div className="bread-card baking" style={{ marginBottom: 24 }}>
-            <img src="/bread.png" alt="식빵이" style={{ width: '78%', height: '78%', objectFit: 'contain' }} />
+            <img
+              src={BREAD_SKIN_IMAGE[active.breadSkin ?? 'shokupan']}
+              alt="빵"
+              style={{ width: '78%', height: '78%', objectFit: 'contain' }}
+            />
           </div>
 
           <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 40, letterSpacing: '-0.1px' }}>
@@ -152,12 +168,48 @@ export function HomePage({ onResult, onOven }: Props) {
           </button>
         </div>
 
-        {/* 식빵이 */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 48 }}>
-          <div className="bread-card" style={{ marginBottom: 16 }}>
-            <img src="/bread.png" alt="식빵이" style={{ width: '78%', height: '78%', objectFit: 'contain' }} />
+        {/* 빵 선택 */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 36 }}>
+          <div className="bread-card" style={{ marginBottom: 12 }}>
+            <img
+              src={BREAD_SKIN_IMAGE[selectedSkin]}
+              alt={BREAD_SKINS.find(s => s.id === selectedSkin)?.name}
+              style={{ width: '78%', height: '78%', objectFit: 'contain' }}
+            />
           </div>
-          <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.2px' }}>식빵이</p>
+          <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.2px', marginBottom: 16 }}>
+            {BREAD_SKINS.find(s => s.id === selectedSkin)?.name}
+          </p>
+          {/* 스킨 피커 */}
+          <div style={{
+            display: 'flex', gap: 10, overflowX: 'auto', width: '100%',
+            paddingBottom: 4,
+            scrollbarWidth: 'none',
+          }}>
+            {BREAD_SKINS.map(skin => (
+              <button
+                key={skin.id}
+                onClick={() => setSelectedSkin(skin.id)}
+                style={{
+                  flexShrink: 0,
+                  width: 64, height: 64,
+                  borderRadius: 16,
+                  border: selectedSkin === skin.id ? '2.5px solid var(--brown)' : '2px solid #E8E8E8',
+                  background: selectedSkin === skin.id ? 'var(--brown-light)' : '#F7F7F7',
+                  cursor: 'pointer',
+                  padding: 4,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'border-color 0.15s, background 0.15s',
+                }}
+              >
+                <img
+                  src={BREAD_SKIN_IMAGE[skin.id]}
+                  alt={skin.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                />
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* 시간 설정 */}
