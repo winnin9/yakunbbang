@@ -6,9 +6,9 @@
 
 ## 🔴 런칭 필수
 
-- [ ] **앱인토스 SDK 연동** — `src/hooks/useStorage.ts`의 localStorage를 Toss Storage API로 교체
-- [ ] **앱인토스 공유 API 연동** — `src/pages/ReportPage.tsx`의 이미지 다운로드 방식을 Toss 공유 API로 교체
-- [ ] **앱인토스 개발 환경 세팅** — 미니앱 SDK 설치, WebView 환경 로컬 테스트
+- [x] **앱인토스 SDK 연동** — `src/hooks/useStorage.ts`의 localStorage를 Toss Storage API로 교체
+- [x] **앱인토스 공유 API 연동** — `src/pages/ReportPage.tsx`의 이미지 다운로드 방식을 Toss 공유 API로 교체
+- [ ] **앱인토스 개발 환경 세팅** — 미니앱 SDK 설치, WebView 환경 로컬 테스트 (granite.config.ts 생성 필요)
 
 ---
 
@@ -24,7 +24,7 @@
 
 ## 🟢 오픈 후 (MVP 후속)
 
-- [ ] **빵 스킨 선택 기능** — 홈에서 스킨 선택 UI 추가. `src/types/index.ts`의 `BREAD_SKIN_IMAGE` 맵에 스킨 추가하면 됨
+- [x] **빵 스킨 선택 기능** — 홈에서 스킨 선택 UI 추가. `src/types/index.ts`의 `BREAD_SKIN_IMAGE` 맵에 스킨 추가하면 됨
 - [ ] **세션 삭제 기능** — 잘못 기록한 세션 삭제 (오븐 리스트에서 스와이프 삭제 등)
 - [ ] **리워드 광고 (빵 스킨 변경)** — 광고 시청 시 해당 세션 스킨 변경
 - [ ] **친구 비교 기능** — 공유 반응 확인 후 도입 검토

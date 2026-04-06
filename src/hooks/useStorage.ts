@@ -1,14 +1,33 @@
 // src/hooks/useStorage.ts
-// ⚠️ 앱인토스 배포 시 localStorage → Toss Storage API로 교체 필요
+// Toss WebView 환경에서는 Toss Storage API를 localStorage와 함께 미러링해요.
+// 브라우저 개발 환경에서는 localStorage만 사용해요.
 
+import { Storage as TossStorage } from '@apps-in-toss/web-bridge'
 import type { OvertimeSession } from '../types'
 
 const STORAGE_KEY = 'yakunbbang_sessions'
 const ACTIVE_KEY = 'yakunbbang_active'
 
+/** Toss WebView 환경인지 감지 */
+function isInTossWebView(): boolean {
+  return typeof window !== 'undefined' && !!(window as any).__GRANITE_NATIVE_EMITTER
+}
+
+/** Toss Storage에 비동기 미러링 (fire-and-forget) */
+function tossSet(key: string, value: string): void {
+  if (!isInTossWebView()) return
+  TossStorage.setItem(key, value).catch(() => {})
+}
+
+function tossRemove(key: string): void {
+  if (!isInTossWebView()) return
+  TossStorage.removeItem(key).catch(() => {})
+}
+
 export interface ActiveSession {
   startTime: number
   goalEndTime: number
+  breadSkin?: string
 }
 
 export function useSessions() {
@@ -30,7 +49,9 @@ export function useSessions() {
         sessions = sessions.filter((s) => s.startTime > oneYearAgo)
       }
       sessions.push(session)
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions))
+      const serialized = JSON.stringify(sessions)
+      localStorage.setItem(STORAGE_KEY, serialized)
+      tossSet(STORAGE_KEY, serialized)
       return true
     } catch {
       return false
@@ -57,8 +78,11 @@ export function useSessions() {
     try {
       if (active === null) {
         localStorage.removeItem(ACTIVE_KEY)
+        tossRemove(ACTIVE_KEY)
       } else {
-        localStorage.setItem(ACTIVE_KEY, JSON.stringify(active))
+        const serialized = JSON.stringify(active)
+        localStorage.setItem(ACTIVE_KEY, serialized)
+        tossSet(ACTIVE_KEY, serialized)
       }
     } catch {
       // 저장 실패 시 무시

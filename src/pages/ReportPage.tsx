@@ -2,8 +2,13 @@
 
 import { useRef, useState } from 'react'
 import html2canvas from 'html2canvas'
+import { saveBase64Data } from '@apps-in-toss/web-bridge'
 import { useSessions } from '../hooks/useStorage'
 import { calcBakerGrade, BAKER_GRADE_LABEL } from '../utils/bakerGrade'
+
+function isInTossWebView(): boolean {
+  return typeof window !== 'undefined' && !!(window as any).__GRANITE_NATIVE_EMITTER
+}
 
 const ChevronLeft = ({ color = 'currentColor', size = 24 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -43,13 +48,21 @@ export function ReportPage({ onBack }: Props) {
   async function handleSave() {
     if (!cardRef.current) return
     const canvas = await html2canvas(cardRef.current, { scale: 2, backgroundColor: null })
-    const url = canvas.toDataURL('image/png')
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `야근빵-${selectedYear}-${String(selectedMonth).padStart(2, '0')}.png`
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
+    const fileName = `야근빵-${selectedYear}-${String(selectedMonth).padStart(2, '0')}.png`
+
+    if (isInTossWebView()) {
+      // Toss WebView: 기기 갤러리에 저장
+      const base64 = canvas.toDataURL('image/png').split(',')[1]
+      await saveBase64Data({ data: base64, fileName, mimeType: 'image/png' })
+    } else {
+      // 브라우저 개발 환경: 파일 다운로드 fallback
+      const a = document.createElement('a')
+      a.href = canvas.toDataURL('image/png')
+      a.download = fileName
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+    }
   }
 
   const sessions = getSessionsByMonth(selectedYear, selectedMonth)
