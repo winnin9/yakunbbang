@@ -29,5 +29,11 @@ export interface OvertimeSession {
 
 // 스킨 ID → 이미지 경로 매핑. 새 스킨 추가 시 여기에 추가.
 export const BREAD_SKIN_IMAGE: Record<string, string> = {
-  shokupan: '/bread.png',
+  shokupan:    '/bread.png',
+  korone:      '/bread_korone.png',
+  cream:       '/bread_cream.png',
+  bun:         '/bread_bun.png',
+  baguette:    '/bread_baguette.png',
+  bagel:       '/bread_bagel.png',
+  sogeumbang:  '/bread_sogeumbang.png',
 }
