@@ -7,7 +7,7 @@ import { BREAD_SKIN_IMAGE } from '../types'
 
 const BREAD_SKINS = [
   { id: 'shokupan',   name: '식빵이' },
-  { id: 'korone',     name: '코로네' },
+  { id: 'korone',     name: '초코소라빵' },
   { id: 'cream',      name: '슈크림' },
   { id: 'bun',        name: '버터번' },
   { id: 'baguette',   name: '바게트' },
