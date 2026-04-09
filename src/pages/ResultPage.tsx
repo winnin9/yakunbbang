@@ -1,5 +1,6 @@
 // src/pages/ResultPage.tsx
 
+import { share, getTossShareLink } from '@apps-in-toss/web-bridge'
 import type { OvertimeSession } from '../types'
 import { BREAD_LABEL } from '../utils/breadCalculator'
 
@@ -29,6 +30,10 @@ const STATUS_TEXT_COLOR: Record<string, string> = {
   ash:          '#FFFFFF',
 }
 
+function isInTossWebView(): boolean {
+  return typeof window !== 'undefined' && !!(window as any).__GRANITE_NATIVE_EMITTER
+}
+
 export function ResultPage({ session, onOven, onHome }: Props) {
   const { breadStatus, overratePercent, goalEndTime, actualEndTime } = session
   const { emoji, label, comment } = BREAD_LABEL[breadStatus]
@@ -48,6 +53,30 @@ export function ResultPage({ session, onOven, onHome }: Props) {
   const diffMs = actualEndTime - goalEndTime
   const isEarly = diffMs < 0
   const diffMin = Math.round(Math.abs(diffMs) / 60000)
+
+  async function handleShare() {
+    const rateText = isEarly
+      ? `-${Math.abs(overratePercent)}%`
+      : overratePercent === 0 ? '딱 맞게' : `+${overratePercent}%`
+    const timeText = diffMin > 0
+      ? (isEarly ? `${diffMin}분 일찍 끝냈어요` : `${diffMin}분 초과했어요`)
+      : '딱 맞게 끝냈어요'
+    const message = `${emoji} 오늘 야근빵 구웠어요!\n결과: ${label} (${rateText})\n목표 ${goalHH}:${goalMM} → 실제 ${actualHH}:${actualMM}, ${timeText}\n\n야근빵으로 오늘 야근 기록해보세요 👇`
+
+    if (isInTossWebView()) {
+      try {
+        const link = await getTossShareLink('intoss://yakunbbang')
+        await share({ message: `${message}\n${link}` })
+      } catch {
+        await share({ message })
+      }
+    } else if (navigator.share) {
+      await navigator.share({ text: message })
+    } else {
+      await navigator.clipboard.writeText(message)
+      alert('클립보드에 복사됐어요!')
+    }
+  }
 
   return (
     <div style={{
@@ -130,17 +159,30 @@ export function ResultPage({ session, onOven, onHome }: Props) {
         </div>
       </div>
 
-      <div style={{ padding: '16px 24px 44px', display: 'flex', gap: 12 }}>
+      <div style={{ padding: '8px 24px 44px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {/* 공유하기 버튼 */}
         <button
           className="btn"
           style={{
-            flex: 1,
             background: isDark ? 'rgba(255,255,255,0.15)' : 'var(--cancel-bg)',
             color: isDark ? '#fff' : 'var(--text-primary)',
           }}
-          onClick={onHome}
-        >홈으로</button>
-        <button className="btn btn-brown" style={{ flex: 1 }} onClick={onOven}>오븐 보기</button>
+          onClick={handleShare}
+        >
+          공유하기
+        </button>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button
+            className="btn"
+            style={{
+              flex: 1,
+              background: isDark ? 'rgba(255,255,255,0.10)' : 'var(--cancel-bg)',
+              color: isDark ? 'rgba(255,255,255,0.7)' : 'var(--text-primary)',
+            }}
+            onClick={onHome}
+          >홈으로</button>
+          <button className="btn btn-brown" style={{ flex: 1 }} onClick={onOven}>오븐 보기</button>
+        </div>
       </div>
     </div>
   )
