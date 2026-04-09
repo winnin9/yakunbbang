@@ -106,7 +106,14 @@ export function ReportPage({ onBack }: Props) {
         </div>
 
         {/* 캡처 대상 카드 */}
-        <div ref={cardRef} style={{ background: '#FDF3EE', borderRadius: 24, padding: 24 }}>
+        <div ref={cardRef} style={{ background: 'linear-gradient(145deg, #FDF3EE 0%, #FDECD8 100%)', borderRadius: 24, padding: 24, position: 'relative', overflow: 'hidden' }}>
+          {/* 식빵이 배경 이미지 */}
+          <img
+            src="/bread.png"
+            alt=""
+            style={{ position: 'absolute', right: -8, top: 20, width: 100, opacity: 0.18, pointerEvents: 'none', userSelect: 'none' }}
+          />
+
           {/* 배지 */}
           <div style={{ display: 'inline-block', background: 'var(--brown-dark)', borderRadius: 100, padding: '6px 14px', marginBottom: 18 }}>
             <span style={{ color: '#fff', fontSize: 13, fontWeight: 700, letterSpacing: '-0.1px' }}>
@@ -160,6 +167,11 @@ export function ReportPage({ onBack }: Props) {
               </span>
             </div>
           )}
+
+          {/* 워터마크 */}
+          <p style={{ fontSize: 12, color: 'rgba(0,0,0,0.25)', fontWeight: 700, textAlign: 'right', marginTop: 14, letterSpacing: '0.2px' }}>
+            🍞 야근빵
+          </p>
         </div>
       </div>
 
