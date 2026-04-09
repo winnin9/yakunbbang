@@ -4,6 +4,7 @@ import { HomePage } from './pages/HomePage'
 import { ResultPage } from './pages/ResultPage'
 import { OvenPage } from './pages/OvenPage'
 import { ReportPage } from './pages/ReportPage'
+import { initStorage } from './hooks/useStorage'
 import type { OvertimeSession } from './types'
 
 type Page = 'home' | 'result' | 'oven' | 'report'
@@ -11,6 +12,11 @@ type Page = 'home' | 'result' | 'oven' | 'report'
 export default function App() {
   const [page, setPage] = useState<Page>('home')
   const [lastSession, setLastSession] = useState<OvertimeSession | null>(null)
+
+  // 앱 시작 시 Toss Storage → localStorage 복구
+  useEffect(() => {
+    initStorage()
+  }, [])
 
   function handleResult(session: OvertimeSession) {
     setLastSession(session)

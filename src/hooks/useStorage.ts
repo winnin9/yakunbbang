@@ -24,6 +24,26 @@ function tossRemove(key: string): void {
   TossStorage.removeItem(key).catch(() => {})
 }
 
+/**
+ * 앱 시작 시 Toss Storage → localStorage 동기화
+ * localStorage가 비어있을 때(재설치 등) Toss Storage에서 복구
+ */
+export async function initStorage(): Promise<void> {
+  if (!isInTossWebView()) return
+  try {
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      const raw = await TossStorage.getItem(STORAGE_KEY)
+      if (raw) localStorage.setItem(STORAGE_KEY, raw)
+    }
+    if (!localStorage.getItem(ACTIVE_KEY)) {
+      const raw = await TossStorage.getItem(ACTIVE_KEY)
+      if (raw) localStorage.setItem(ACTIVE_KEY, raw)
+    }
+  } catch {
+    // 실패 시 localStorage 그대로 사용
+  }
+}
+
 export interface ActiveSession {
   startTime: number
   goalEndTime: number
