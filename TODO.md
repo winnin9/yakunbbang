@@ -8,7 +8,7 @@
 
 - [x] **앱인토스 SDK 연동** — `src/hooks/useStorage.ts`의 localStorage를 Toss Storage API로 교체
 - [x] **앱인토스 공유 API 연동** — `src/pages/ReportPage.tsx`의 이미지 다운로드 방식을 Toss 공유 API로 교체
-- [ ] **앱인토스 개발 환경 세팅** — 미니앱 SDK 설치, WebView 환경 로컬 테스트 (granite.config.ts 생성 필요)
+- [x] **앱인토스 개발 환경 세팅** — 미니앱 SDK 설치, WebView 환경 로컬 테스트 (granite.config.ts 생성 필요)
 
 ---
 
