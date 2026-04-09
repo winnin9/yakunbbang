@@ -14,7 +14,6 @@
 
 ## 🟡 오픈 전 권장
 
-- [ ] **빵 이미지 7단계 리소스** — perfect~ash 각 단계별 일러스트 확보 및 적용 (`src/utils/breadCalculator.ts` BREAD_LABEL 참고)
 - [ ] **공유 카드 디자인 시안** — 월간 리포트 이미지 카드 디자인 확정 (`src/pages/ReportPage.tsx` cardRef 영역)
 - [ ] **제빵사 등급 카피라이팅 확정** — 5단계 코멘트 문구 (`src/utils/bakerGrade.ts` BAKER_GRADE_LABEL)
 - [ ] **html2canvas 이모지 테스트** — iOS/Android 실기기에서 👨‍🍳 등 복합 이모지 공유 카드 렌더링 확인
