@@ -18,9 +18,9 @@ export function calcBakerGrade(sessions: OvertimeSession[]): BakerGrade | null {
 }
 
 export const BAKER_GRADE_LABEL: Record<BakerGrade, { emoji: string; title: string; comment: string }> = {
-  master:       { emoji: '👨‍🍳', title: '마스터 제빵사',    comment: '야근도 내 손 안에' },
-  skilled:      { emoji: '🧑‍🍳', title: '실력파 제빵사',    comment: '꽤 잘 구웠어요' },
-  diligent:     { emoji: '🍞',   title: '성실한 제빵사',    comment: '분전하고 있어요' },
-  smoky:        { emoji: '🟠',   title: '탄내나는 제빵사',  comment: '오븐 온도 점검 필요' },
-  'charcoal-pro': { emoji: '☠️', title: '숯 전문가',        comment: '이달 오븐이 너무 뜨거웠어요' },
+  master:       { emoji: '👨‍🍳', title: '전설의 제빵사',    comment: '야근계의 신화' },
+  skilled:      { emoji: '🧑‍🍳', title: '믿음직한 제빵사',  comment: '안정적으로 잘 굽고 있어요' },
+  diligent:     { emoji: '🍞',   title: '노력파 제빵사',    comment: '반은 잘 구웠어요' },
+  smoky:        { emoji: '🟠',   title: '까맣게 타는 중',   comment: '목표 시간 재설정이 필요해요' },
+  'charcoal-pro': { emoji: '☠️',   title: '야근 마왕',        comment: '퇴근이 뭔가요?' },
 }
