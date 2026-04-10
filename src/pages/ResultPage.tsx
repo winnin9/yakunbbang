@@ -130,11 +130,7 @@ export function ResultPage({ session, onOven, onHome }: Props) {
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
             <span style={{ fontSize: 14, fontWeight: 600, color: isDark ? 'rgba(255,255,255,0.55)' : 'var(--text-secondary)' }}>초과율</span>
             <span style={{ fontSize: 22, fontWeight: 800, color: overratePercent <= 0 ? '#22C55E' : isDark ? '#FF6B6B' : 'var(--brown)', letterSpacing: '-0.5px' }}>
-              {isEarly
-                ? `-${Math.abs(overratePercent)}%`
-                : overratePercent === 0
-                ? '0%'
-                : `+${overratePercent}%`}
+              {overratePercent <= 0 ? '0%' : `+${overratePercent}%`}
             </span>
           </div>
           <div style={{ height: 1, background: isDark ? 'rgba(255,255,255,0.1)' : 'var(--divider)', marginBottom: 14 }} />
@@ -159,30 +155,17 @@ export function ResultPage({ session, onOven, onHome }: Props) {
         </div>
       </div>
 
-      <div style={{ padding: '8px 24px 44px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {/* 공유하기 버튼 */}
+      <div style={{ padding: '8px 24px 44px', display: 'flex', gap: 12 }}>
         <button
           className="btn"
           style={{
-            background: isDark ? 'rgba(255,255,255,0.15)' : 'var(--cancel-bg)',
-            color: isDark ? '#fff' : 'var(--text-primary)',
+            flex: 1,
+            background: isDark ? 'rgba(255,255,255,0.10)' : 'var(--cancel-bg)',
+            color: isDark ? 'rgba(255,255,255,0.7)' : 'var(--text-primary)',
           }}
-          onClick={handleShare}
-        >
-          공유하기
-        </button>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <button
-            className="btn"
-            style={{
-              flex: 1,
-              background: isDark ? 'rgba(255,255,255,0.10)' : 'var(--cancel-bg)',
-              color: isDark ? 'rgba(255,255,255,0.7)' : 'var(--text-primary)',
-            }}
-            onClick={onHome}
-          >홈으로</button>
-          <button className="btn btn-brown" style={{ flex: 1 }} onClick={onOven}>오븐 보기</button>
-        </div>
+          onClick={onHome}
+        >홈으로</button>
+        <button className="btn btn-brown" style={{ flex: 1 }} onClick={onOven}>오븐 보기</button>
       </div>
     </div>
   )

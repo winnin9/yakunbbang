@@ -6,6 +6,7 @@ import { BREAD_LABEL } from '../utils/breadCalculator'
 
 interface Props {
   sessions: OvertimeSession[]
+  onDelete?: (id: string) => void
 }
 
 function formatDate(dateStr: string): string {
@@ -18,7 +19,7 @@ function formatDate(dateStr: string): string {
   return `${mm}/${dd} (${day})`
 }
 
-export function OvenList({ sessions }: Props) {
+export function OvenList({ sessions, onDelete }: Props) {
   if (sessions.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '48px 0' }}>
@@ -95,6 +96,31 @@ export function OvenList({ sessions }: Props) {
             }}>
               {s.overratePercent <= 0 ? '칼퇴 🎉' : `+${s.overratePercent}%`}
             </div>
+
+            {/* 삭제 버튼 */}
+            {onDelete && (
+              <button
+                onClick={() => onDelete(s.id)}
+                style={{
+                  marginLeft: 8,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: '#CCC',
+                  flexShrink: 0,
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                  <path d="M10 11v6M14 11v6" />
+                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                </svg>
+              </button>
+            )}
           </li>
         )
       })}

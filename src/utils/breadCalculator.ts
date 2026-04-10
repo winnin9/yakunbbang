@@ -11,7 +11,7 @@ export function calcOverrate(
   const overtime = actualEndTime - goalEndTime
   // planned <= 0은 잘못된 입력(목표가 시작보다 이전). 입력 단계에서 방지하므로 0% 처리.
   if (planned <= 0) return 0
-  return Math.round((overtime / planned) * 100)
+  return Math.max(0, Math.round((overtime / planned) * 100))
 }
 
 export function getBreadStatus(overratePercent: number): BreadStatus {

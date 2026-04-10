@@ -109,5 +109,16 @@ export function useSessions() {
     }
   }
 
-  return { getSessions, saveSession, getSessionsByMonth, getActiveSession, saveActiveSession }
+  function deleteSession(id: string): void {
+    try {
+      const sessions = getSessions().filter(s => s.id !== id)
+      const serialized = JSON.stringify(sessions)
+      localStorage.setItem(STORAGE_KEY, serialized)
+      tossSet(STORAGE_KEY, serialized)
+    } catch {
+      // 삭제 실패 시 무시
+    }
+  }
+
+  return { getSessions, saveSession, getSessionsByMonth, getActiveSession, saveActiveSession, deleteSession }
 }

@@ -50,18 +50,24 @@ export function ReportPage({ onBack }: Props) {
     const canvas = await html2canvas(cardRef.current, { scale: 2, backgroundColor: null })
     const fileName = `야근빵-${selectedYear}-${String(selectedMonth).padStart(2, '0')}.png`
 
-    if (isInTossWebView()) {
-      // Toss WebView: 기기 갤러리에 저장
-      const base64 = canvas.toDataURL('image/png').split(',')[1]
-      await saveBase64Data({ data: base64, fileName, mimeType: 'image/png' })
-    } else {
-      // 브라우저 개발 환경: 파일 다운로드 fallback
+    function browserDownload() {
       const a = document.createElement('a')
       a.href = canvas.toDataURL('image/png')
       a.download = fileName
       document.body.appendChild(a)
       a.click()
       a.remove()
+    }
+
+    if (isInTossWebView()) {
+      try {
+        const base64 = canvas.toDataURL('image/png').split(',')[1]
+        await saveBase64Data({ data: base64, fileName, mimeType: 'image/png' })
+      } catch {
+        browserDownload()
+      }
+    } else {
+      browserDownload()
     }
   }
 

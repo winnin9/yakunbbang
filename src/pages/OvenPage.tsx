@@ -1,5 +1,6 @@
 // src/pages/OvenPage.tsx
 
+import { useState } from 'react'
 import { useSessions } from '../hooks/useStorage'
 import { OvenList } from '../components/OvenList'
 
@@ -9,8 +10,14 @@ interface Props {
 }
 
 export function OvenPage({ onHome, onReport }: Props) {
-  const { getSessions } = useSessions()
+  const { getSessions, deleteSession } = useSessions()
+  const [, forceUpdate] = useState(0)
   const sessions = getSessions()
+
+  function handleDelete(id: string) {
+    deleteSession(id)
+    forceUpdate(n => n + 1)
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg)' }}>
@@ -35,7 +42,7 @@ export function OvenPage({ onHome, onReport }: Props) {
           </span>
         </div>
 
-        <OvenList sessions={sessions} />
+        <OvenList sessions={sessions} onDelete={handleDelete} />
       </div>
 
       <div style={{ padding: '16px 24px 48px' }}>

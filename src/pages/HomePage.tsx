@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useOvertimeSession } from '../hooks/useOvertimeSession'
+import { useRewardedAd } from '../hooks/useRewardedAd'
+import { BannerAd } from '../components/BannerAd'
 import type { OvertimeSession } from '../types'
 import { BREAD_SKIN_IMAGE } from '../types'
 
@@ -45,7 +47,9 @@ export function HomePage({ onResult, onOven }: Props) {
   const [elapsed, setElapsed] = useState(0)
   const [overMinutes, setOverMinutes] = useState(0)
   const [selectedSkin, setSelectedSkin] = useState('shokupan')
+  const [adLoading, setAdLoading] = useState(false)
   const { active, startSession, endSession, cancelSession } = useOvertimeSession()
+  const { showRewardedAd } = useRewardedAd()
 
   function handleStart() {
     const now = new Date()
@@ -128,7 +132,10 @@ export function HomePage({ onResult, onOven }: Props) {
           </div>
         </div>
 
-        <div style={{ padding: '16px 24px 48px', display: 'flex', gap: 12 }}>
+        <div style={{ padding: '0 24px 16px' }}>
+          <BannerAd />
+        </div>
+        <div style={{ padding: '8px 24px 48px', display: 'flex', gap: 12 }}>
           <button className="btn btn-cancel" style={{ flex: 1 }} onClick={cancelSession}>취소</button>
           <button className="btn btn-brown" style={{ flex: 1 }} onClick={handleEnd}>빵 완성 🍞</button>
         </div>
@@ -186,29 +193,52 @@ export function HomePage({ onResult, onOven }: Props) {
             paddingBottom: 4,
             scrollbarWidth: 'none',
           }}>
-            {BREAD_SKINS.map(skin => (
-              <button
-                key={skin.id}
-                onClick={() => setSelectedSkin(skin.id)}
-                style={{
-                  flexShrink: 0,
-                  width: 64, height: 64,
-                  borderRadius: 16,
-                  border: selectedSkin === skin.id ? '2.5px solid var(--brown)' : '2px solid #E8E8E8',
-                  background: selectedSkin === skin.id ? 'var(--brown-light)' : '#F7F7F7',
-                  cursor: 'pointer',
-                  padding: 4,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  transition: 'border-color 0.15s, background 0.15s',
-                }}
-              >
-                <img
-                  src={BREAD_SKIN_IMAGE[skin.id]}
-                  alt={skin.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                />
-              </button>
-            ))}
+            {BREAD_SKINS.map(skin => {
+              const isLocked = skin.id !== 'shokupan'
+              const isSelected = selectedSkin === skin.id
+              return (
+                <button
+                  key={skin.id}
+                  onClick={() => {
+                    if (skin.id === 'shokupan') {
+                      setSelectedSkin(skin.id)
+                      return
+                    }
+                    if (adLoading) return
+                    setAdLoading(true)
+                    showRewardedAd({
+                      onRewarded: () => { setSelectedSkin(skin.id); setAdLoading(false) },
+                      onCancel: () => setAdLoading(false),
+                      onError: () => setAdLoading(false),
+                    })
+                  }}
+                  style={{
+                    flexShrink: 0,
+                    width: 64, height: 64,
+                    borderRadius: 16,
+                    border: isSelected ? '2.5px solid var(--brown)' : '2px solid #E8E8E8',
+                    background: isSelected ? 'var(--brown-light)' : '#F7F7F7',
+                    cursor: adLoading ? 'not-allowed' : 'pointer',
+                    padding: 4,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    position: 'relative',
+                    transition: 'border-color 0.15s, background 0.15s',
+                  }}
+                >
+                  <img
+                    src={BREAD_SKIN_IMAGE[skin.id]}
+                    alt={skin.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: isLocked && !isSelected ? 0.5 : 1 }}
+                  />
+                  {isLocked && !isSelected && (
+                    <span style={{
+                      position: 'absolute', bottom: 2, right: 4,
+                      fontSize: 11, lineHeight: 1,
+                    }}>🔒</span>
+                  )}
+                </button>
+              )
+            })}
           </div>
         </div>
 
